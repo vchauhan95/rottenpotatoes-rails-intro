@@ -4,9 +4,9 @@
 %table#movies.table.table-striped.col-md-12
   %thead
     %tr
-      %th{:id => 'title_header'}= sortable "title", "Movie Title"
+      %th{params[:sort] == "title" ? {:class => "hilite"} : {}, :id => "title_header"}= sortable "title", "Movie Title"
       %th Rating
-      %th= sortable "release_date", "Release Date"
+      %th{params[:sort] == "release_date" ? {:class => "hilite"} : {}, :id => 'release_date_header'}= sortable "release_date", "Release Date"
       %th More Info
   %tbody
     - @movies.each do |movie|
