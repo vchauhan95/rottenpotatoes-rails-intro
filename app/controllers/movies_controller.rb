@@ -17,7 +17,7 @@ class MoviesController < ApplicationController
       @highlight_title = "hilite"
     else if @selection == "release_date"
       @highlight_release_date = "hilite"
-  end
+    end
 
   def new
     # default: render 'new' template
