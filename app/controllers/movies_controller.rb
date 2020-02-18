@@ -26,7 +26,6 @@ class MoviesController < ApplicationController
       if session[:ratings]
         @ratings=session[:ratings]
         @movies=@movies.where(rating: @ratings.keys)
-        redirectFlag=1 #setting redirect flag if param value is not present for filtering movies
       else
         @ratings=Hash[@all_ratings.collect {|rating| [rating, rating]}] #setting rating to all ratings as initially all boxes should be checked
         @movies=@movies

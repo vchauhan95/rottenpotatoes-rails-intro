@@ -13,7 +13,7 @@
       %th Rating
       %th{:class=>@highlight_release_date, :id=>"release_date_header"}= link_to "Release Date", :sort => "release_date"
       %th More Info
-  %tbod
+  %tbody
     - @movies.each do |movie|
       %tr
         %td= movie.title
