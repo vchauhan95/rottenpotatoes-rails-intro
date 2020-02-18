@@ -12,12 +12,30 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.all_ratings
-    @movies = Movie.order(params[:sort])
-    @selection = params[:sort]
+    # redirect is set when session is used instead of param, and the url is redirected to the session values
+    redirectF = 0
+    # if the user chooses a sorting parameter, use that, else use the previous order stored in session. If session is used, then also set the redirect flag
+    if params[:sort]
+      @selection = params[:sort]
+    else
+      @selection = session[:sort]
+    end
+    if (params[:sort]==nil && session[:sort]!=nil)
+      redirectF=1
+    end
+    
+    if params[:sort]!= session[:sort]
+      session[:sort]=@selection
+    end
+    # now that the instance variables are set to either param or session, they can be used
     if @selection == "title"
       @highlight_title = "hilite"
+      @movies = Movie.all.order(@selection)
     elsif @selection == "release_date"
       @highlight_release_date = "hilite"
+      @movies = Movie.all.order(@selection)
+    else
+      @movies = Movie.all
     end
     if params[:ratings]
       @ratings=params[:ratings]
@@ -26,10 +44,20 @@ class MoviesController < ApplicationController
       if session[:ratings]
         @ratings=session[:ratings]
         @movies=@movies.where(rating: @ratings.keys)
+        redirectF=1 # since session is being used, the url will be redirected
       else
         @ratings=Hash[@all_ratings.collect {|rating| [rating, rating]}] #setting rating to all ratings as initially all boxes should be checked
         @movies=@movies
       end
+    end
+    #updating session according to chosen ratings
+    if @ratings != session[:ratings]
+      session[:ratings]=@ratings
+    end
+    #redirecting the url according to the values in the session variable
+    if redirectF==1
+      flash.keep
+      redirect_to movies_path(sort: session[:sort],ratings: session[:ratings])
     end
   end
   def new
