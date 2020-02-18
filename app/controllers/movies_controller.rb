@@ -18,7 +18,10 @@ class MoviesController < ApplicationController
     elsif @selection == "release_date"
       @highlight_release_date = "hilite"
     end
-
+    if params[:ratings]
+      @ratings=params[:ratings]
+      @movies=@movies.where(rating: @ratings.keys)
+    end
   end
   def new
     # default: render 'new' template
