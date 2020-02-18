@@ -23,7 +23,7 @@ class MoviesController < ApplicationController
     if (params[:sort]==nil && session[:sort]!=nil)
       redirectF=1
     end
-    
+    # setting the session's sort parameter to that of params for next iterations
     if params[:sort]!= session[:sort]
       session[:sort]=@selection
     end
